@@ -7,7 +7,7 @@ let cachedTimestamp: string | null = null;
 let lastUpdated = 0;
 const ISR_INTERVAL = 30000; // 30 seconds
 
-app.get('/timestamp', (ctx) => {
+app.get('/', (ctx) => {
   const now = Date.now();
 
   if (!cachedTimestamp || now - lastUpdated > ISR_INTERVAL) {
@@ -21,7 +21,10 @@ app.get('/timestamp', (ctx) => {
   return ctx.json({ timestamp: cachedTimestamp });
 });
 
-// Vercel Node.js handler
-export default async function handler(req: Request, res: Response) {
-  return app.fetch(req);
-}
+// Create the Bun server and attach the Hono app
+serve({
+  fetch: app.fetch,
+  port: 3000,
+});
+
+console.log('Bun server running on http://localhost:3000');
