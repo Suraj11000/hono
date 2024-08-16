@@ -1,0 +1,17 @@
+{
+  "name": "isr",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "bun run index.ts"
+  },
+  "dependencies": {
+    "hono": "^4.5.5"
+  }
+}
