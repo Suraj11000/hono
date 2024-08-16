@@ -1,5 +1,4 @@
 import { Hono } from 'hono';
-import { serve } from 'bun';
 
 const app = new Hono();
 
@@ -21,10 +20,10 @@ app.get('/', (ctx) => {
   return ctx.json({ timestamp: cachedTimestamp });
 });
 
-// Create the Bun server and attach the Hono app
-serve({
-  fetch: app.fetch,
-  port: 3000,
-});
-
-console.log('Bun server running on http://localhost:3000');
+// Vercel Node.js handler
+export default async function handler(req: any, res: any) {
+  const response = await app.fetch(req);
+  res.statusCode = response.status;
+  res.setHeader('Content-Type', 'application/json');
+  res.end(await response.text());
+}
